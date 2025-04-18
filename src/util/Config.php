@@ -14,6 +14,6 @@ class Config
     public static function getEnv()
     {
         $dotenv = new Dotenv();
-        $dotenv->load('./.env');
+        $dotenv->load(__DIR__ . '/../../.env');
     }
 }

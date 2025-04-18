@@ -1,0 +1,9 @@
+@media only screen and (max-width: 576px) {
+    #menu {
+        width: 70%;
+    }
+
+    main {
+        margin-inline: 5%;
+    }
+}
