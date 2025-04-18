@@ -1,11 +1,13 @@
 <?php
-
-use Syleo24\Framework\core\Router;
-
 require_once '../vendor/autoload.php';
 session_start();
 
-define('ROOT', dirname(__DIR__));           // => /home/.../framework
+use Syleo24\Framework\core\Router;
+use Syleo24\Framework\util\Config;
+
+Config::getEnv();
+
+define('ROOT', dirname(__DIR__));
 define('VIEWS_PATH', ROOT . '/views/');
 
 $router = new Router();
