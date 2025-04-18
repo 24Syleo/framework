@@ -1,0 +1,25 @@
+{
+    "name": "syleo24/framework",
+    "require": {
+        "altorouter/altorouter": "^2.0",
+        "symfony/var-dumper": "^7.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^12.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Syleo24\\Framework\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Syleo24",
+            "email": "sylvain.beggiora@outlook.com"
+        }
+    ],
+    "scripts": {
+        "serve": "php -S localhost:8080 -t public",
+        "test": "phpunit --configuration phpunit.xml"
+    }
+}
