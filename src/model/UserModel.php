@@ -1,5 +1,9 @@
 <?php
 
+namespace Syleo24\Framework\model;
+
+use PDO;
+use Exception;
 use Syleo24\Framework\core\Model;
 use Syleo24\Framework\entity\User;
 use Syleo24\Framework\serializer\UserSerializer;
@@ -53,6 +57,21 @@ class UserModel extends Model
             $stmt = $this->pdo->prepare($query);
             $stmt->execute(array($user->getUsername(), $user->getEmail(), $user->getPassword(), $user->getRole()));
             return $this->getById($this->pdo->lastInsertId());
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function getAll(): array
+    {
+        try {
+            $query = "SELECT * FROM users";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+            $array = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return array_map(function ($array) {
+                return UserSerializer::fromArray($array);
+            }, $array);
         } catch (Exception $e) {
             throw $e;
         }

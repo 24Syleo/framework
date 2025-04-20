@@ -13,9 +13,10 @@ define('VIEWS_PATH', ROOT . '/views/');
 $router = new Router();
 // Routes GET
 $router->get('/', 'HomeController#index', 'home');
-$router->get('/user', 'UserController#index', 'user');
+$router->get('/users', 'UserController#index', 'users');
 $router->get('/error', 'ErrorController#index', 'error');
 // Routes POST
+$router->post('/user/add', 'UserController#add', 'user_add');
 
 // API ou autres
 

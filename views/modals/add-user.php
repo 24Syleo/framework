@@ -6,17 +6,20 @@
         </div>
         <div class="modal-body">
             <form id="addUser">
-                <input type="text" name="username" id="username">
-                <input type="email" name="email" id="email">
-                <input type="password" name="password" id="password">
+                <input type="text" name="username" id="username" placeholder="username">
+                <span class="response"></span>
+                <input type="email" name="email" id="email" placeholder="email">
+                <span class="response"></span>
+                <input type="password" name="password" id="password" placeholder="password">
+                <span class="response"></span>
                 <select name="role" id="role">
                     <option value="user">Utilisateur</option>
                     <option value="admin">Administrateur</option>
                 </select>
+                <span class="response"></span>
                 <div>
-                    <button type="submit" class="btnVaild">Ajouter</button>
+                    <button type="submit" class="btnVaild" id="submit">Ajouter</button>
                 </div>
-                <div class="error"></div>
             </form>
         </div>
     </div>

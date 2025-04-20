@@ -10,6 +10,6 @@
     <a href="/" class="link">Home</a>
     <a href="/commande" class="link">Commandes</a>
     <a href="/adresse" class="link">Adresse</a>
-    <a href="/user" class="link">User</a>
+    <a href="/users" class="link">Utilisateurs</a>
     <a href="/client" class="link">Client</a>
 </div>
