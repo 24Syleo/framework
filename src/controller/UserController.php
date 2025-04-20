@@ -64,4 +64,66 @@ class UserController extends Controller
             ]);
         }
     }
+
+    public function edit($id)
+    {
+        try {
+
+            $user = $this->model->getById($id);
+            if (!$user instanceof User || !$user) {
+                throw new Exception('Utilisateur introuvable');
+            }
+            $this->render('user', ['user' => $user]);
+        } catch (Exception $e) {
+            FlashMessage::set('Erreur : ' . $e->getMessage(), 'error');
+            $this->render('error', ['title' => 'Erreur']);
+        }
+    }
+
+
+    public function update($id)
+    {
+        try {
+
+            $user = $this->model->getById($id);
+            if (!$user instanceof User || !$user) {
+                throw new Exception('Utilisateur introuvable');
+            }
+            $json = file_get_contents('php://input');
+            $data = json_decode($json, true);
+
+
+            if (!isset($data['username'], $data['email'], $data['role'])) {
+                throw new Exception('Champs manquants');
+            }
+
+            $user->setUsername($data['username']);
+            $user->setEmail($data['email']);
+            $user->setRole($data['role']);
+
+            if (!($user instanceof User)) {
+                throw new Exception('Invalid user entity');
+            }
+            $updatedUser = $this->model->update($user);
+
+            if (!($updatedUser instanceof User)) {
+                throw new Exception('Invalid update user entity');
+            }
+
+            FlashMessage::set('Utilisateur ' . $updatedUser->getUsername() .  ' mis à jour avec succès !', 'success');
+
+            echo json_encode([
+                'success' => true,
+                'user' => UserSerializer::toArray($updatedUser)
+            ]);
+        } catch (Exception $e) {
+            FlashMessage::set('Erreur : ' . $e->getMessage(), 'error');
+
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
 }

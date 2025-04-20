@@ -15,13 +15,17 @@ class UserModel extends Model
      * @param int $id
      * @return User
      */
-    public function getById(int $id): User
+    public function getById(int $id): ?User
     {
         try {
             $query = "SELECT * FROM users WHERE id=?";
             $stmt = $this->pdo->prepare($query);
             $stmt->execute(array($id));
             $array = $stmt->fetch(PDO::FETCH_ASSOC);
+            // Si aucun résultat n'est trouvé, on retourne null
+            if (!$array) {
+                return null;
+            }
             return UserSerializer::fromArray($array);
         } catch (Exception $e) {
             throw $e;
@@ -33,13 +37,18 @@ class UserModel extends Model
      * @param string $email
      * @return User
      */
-    public function getByEmail(string $email): User
+    public function getByEmail(string $email): ?User
     {
         try {
             $query = "SELECT * FROM users WHERE email=?";
             $stmt = $this->pdo->prepare($query);
             $stmt->execute(array($email));
             $array = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Si aucun résultat n'est trouvé, on retourne null
+            if (!$array) {
+                return null;
+            }
             return UserSerializer::fromArray($array);
         } catch (Exception $e) {
             throw $e;
@@ -72,6 +81,18 @@ class UserModel extends Model
             return array_map(function ($array) {
                 return UserSerializer::fromArray($array);
             }, $array);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function update(User $user): User
+    {
+        try {
+            $query = "UPDATE users SET username=?, email=?, role=? WHERE id=?";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(array($user->getUsername(), $user->getEmail(), $user->getRole(), $user->getId()));
+            return $this->getById($user->getId());
         } catch (Exception $e) {
             throw $e;
         }

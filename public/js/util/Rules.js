@@ -3,7 +3,7 @@ export const rules = {
     username: {
         test: (val) => val.length >= 3 && val.length <= 20,
         success: "✅ Nom d'utilisateur valide.",
-        error: "❌ Doit contenir entre 5 et 10 caractères.",
+        error: "❌ Doit contenir entre 3 et 20 caractères.",
     },
     email: {
         test: (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val),

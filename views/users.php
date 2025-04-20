@@ -6,8 +6,8 @@
             <h3>Nom : <?= $user->getUsername() ?></h3>
             <p>Email : <?= $user->getEmail() ?></p>
             <p>Rôle : <?= $user->getRole() ?></p>
-            <a href="#" class="btnEdit"><i class="fa-solid fa-edit"></i></a>
-            <a href="#" class="btnDelete"><i class="fa-solid fa-trash"></i></a>
+            <a href="/user/<?= $user->getId() ?>" class="text-success"><i class="fa-solid fa-edit"></i></a>
+            <a href="#" class="text-error"><i class="fa-solid fa-trash"></i></a>
         </div>
     <?php endforeach; ?>
 </div>

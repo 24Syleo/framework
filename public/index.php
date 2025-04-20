@@ -14,9 +14,11 @@ $router = new Router();
 // Routes GET
 $router->get('/', 'HomeController#index', 'home');
 $router->get('/users', 'UserController#index', 'users');
+$router->get('/user/[i:id]', 'UserController#edit', 'user');
 $router->get('/error', 'ErrorController#index', 'error');
 // Routes POST
 $router->post('/user/add', 'UserController#add', 'user_add');
+$router->post('/user/update/[i:id]', 'UserController#update', 'user_update');
 
 // API ou autres
 
