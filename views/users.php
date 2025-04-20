@@ -1,4 +1,4 @@
-<h1>Listes d'utilisateur</h1>
+<h1>Liste d'utilisateurs</h1>
 
 <div class="card-grid">
     <?php foreach ($users as $user): ?>

@@ -119,7 +119,7 @@ nav {
 
 #menu {
     position: absolute;
-    height: 100vh;
+    height: 85vh;
     width: 30%;
     display: flex;
     flex-direction: column;
