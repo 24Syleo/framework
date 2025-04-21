@@ -62,9 +62,9 @@ class UserModel extends Model
     public function insert(User $user): User
     {
         try {
-            $query = "INSERT INTO users (username, email, password, role) VALUES (?,?,?,?)";
+            $query = "INSERT INTO users (username, email, password, role, phone) VALUES (?,?,?,?, ?)";
             $stmt = $this->pdo->prepare($query);
-            $stmt->execute(array($user->getUsername(), $user->getEmail(), $user->getPassword(), $user->getRole()));
+            $stmt->execute(array($user->getUsername(), $user->getEmail(), $user->getPassword(), $user->getRole(), $user->getPhone()));
             return $this->getById($this->pdo->lastInsertId());
         } catch (Exception $e) {
             throw $e;
@@ -89,9 +89,9 @@ class UserModel extends Model
     public function update(User $user): User
     {
         try {
-            $query = "UPDATE users SET username=?, email=?, role=? WHERE id=?";
+            $query = "UPDATE users SET username=?, email=?, role=?, phone=? WHERE id=?";
             $stmt = $this->pdo->prepare($query);
-            $stmt->execute(array($user->getUsername(), $user->getEmail(), $user->getRole(), $user->getId()));
+            $stmt->execute([$user->getUsername(), $user->getEmail(), $user->getRole(), $user->getPhone(), $user->getId()]);
             return $this->getById($user->getId());
         } catch (Exception $e) {
             throw $e;

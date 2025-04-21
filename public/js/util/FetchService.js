@@ -20,7 +20,7 @@ export class FetchService {
 
     static async post(url, data) {
         try {
-            console.log(url, data);
+            console.log(url);
 
             const response = await fetch(url, {
                 method: 'POST',
@@ -31,7 +31,9 @@ export class FetchService {
                 ,
                 body: JSON.stringify(data)
             });
-            return await response.json();
+            const res = await response.json();
+            console.log(res);
+            return res;
         } catch (err) {
             console.error('POST error:', err);
             throw err;

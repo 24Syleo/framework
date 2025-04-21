@@ -93,8 +93,8 @@ class UserController extends Controller
     public function update($id)
     {
         try {
-
             $user = $this->model->getById($id);
+
             if (!$user instanceof User || !$user) {
                 throw new Exception('Utilisateur introuvable');
             }
@@ -102,13 +102,13 @@ class UserController extends Controller
             $data = json_decode($json, true);
 
 
-            if (!isset($data['username'], $data['email'], $data['role'])) {
+            if (!isset($data['username'], $data['email'], $data['phone'])) {
                 throw new Exception('Champs manquants');
             }
 
             $user->setUsername($data['username']);
             $user->setEmail($data['email']);
-            $user->setRole($data['role']);
+            $user->setPhone($data['phone']);
 
             if (!($user instanceof User)) {
                 throw new Exception('Invalid user entity');
@@ -123,6 +123,7 @@ class UserController extends Controller
 
             FlashMessage::set('Utilisateur ' . $safeUser->getUsername() .  ' mis à jour avec succès !', 'success');
 
+            http_response_code(200);
             echo json_encode([
                 'success' => true,
                 'user' => UserSerializer::toArray($safeUser)

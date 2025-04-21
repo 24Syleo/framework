@@ -20,4 +20,12 @@ export const rules = {
         success: "✅ Rôle valide.",
         error: "❌ Rôle invalide.",
     },
+    phone: {
+        test: (val) => {
+            const cleaned = val.replace(/[\s\-().]/g, '');
+            return /^[+]?[\d\s\-().]{6,20}$/.test(val) && cleaned.replace(/^\+/, '').match(/\d/g).length >= 6;
+        },
+        success: "✅ Numéro de téléphone valide.",
+        error: "❌ Numéro invalide. Minimum 6 chiffres requis.",
+    },
 };

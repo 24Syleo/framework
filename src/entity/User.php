@@ -11,6 +11,7 @@ class User
     private string $email;
     private string $password;
     private string $role;
+    private string $phone;
 
     public function getId(): ?int
     {
@@ -98,7 +99,7 @@ class User
     {
         $validRoles = ['user', 'admin', 'client'];
         if (!in_array($role, $validRoles)) {
-            throw new Exception("Rôle invalide");
+            throw new Exception("Rôle invalide " . $role);
         }
         $this->role = $role;
         return $this;
@@ -130,5 +131,30 @@ class User
     public function isUser(): bool
     {
         return $this->hasRole('user');
+    }
+
+    /**
+     * Get the value of phone
+     */
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set the value of phone
+     *
+     * @return  self
+     */
+    public function setPhone(?string $phone): static
+    {
+        $cleanPhone = trim($phone ?? '');
+
+        if (!empty($cleanPhone) && !preg_match('/^[0-9\+\-\.\s]+$/', $cleanPhone)) {
+            throw new \Exception("Numéro de téléphone invalide.");
+        }
+
+        $this->phone = $cleanPhone;
+        return $this;
     }
 }

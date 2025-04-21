@@ -12,6 +12,9 @@ class UserSerializer
         if (isset($data['id'])) {
             $user->setId($data['id']);
         }
+        if (isset($data['phone'])) {
+            $user->setPhone($data['phone']);
+        }
         $user->setUsername($data['username']);
         $user->setEmail($data['email']);
         $user->setPassword($data['password']);
@@ -26,7 +29,8 @@ class UserSerializer
             'username' => $user->getUsername(),
             'email' => $user->getEmail(),
             'password' => $user->getPassword(),
-            'role' => $user->getRole()
+            'role' => $user->getRole(),
+            'phone' => $user->getPhone(),
         ];
     }
 }

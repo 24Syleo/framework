@@ -10,6 +10,8 @@
                 <span class="response"></span>
                 <input type="email" name="email" id="email" placeholder="email">
                 <span class="response"></span>
+                <input type="text" name="phone" id="phone" placeholder="phone">
+                <span class="response"></span>
                 <input type="password" name="password" id="password" placeholder="password">
                 <span class="response"></span>
                 <select name="role" id="role">

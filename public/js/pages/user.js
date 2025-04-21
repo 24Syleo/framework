@@ -24,8 +24,10 @@ export function init() {
             try {
                 const response = await FetchService.post('/user/update/' + data.id, data);
                 if (response.success) {
+                    // alert('Utilisateur  ' + response.user.username + 'modifié avec succès.');
                     location.reload();
                 } else {
+                    // alert('Erreur lors de la modification de l\'utilisateur.');
                     location.reload();
                 }
             } catch (err) {

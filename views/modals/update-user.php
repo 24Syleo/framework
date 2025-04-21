@@ -13,6 +13,9 @@
                 <input type="email" name="email" id="email" placeholder="<?= $user->getEmail() ?>"
                     value="<?= $user->getEmail() ?>">
                 <span class="response"></span>
+                <input type="text" name="phone" id="phone" placeholder="<?= $user->getPhone() ?>"
+                    value="<?= $user->getPhone() ?>">
+                <span class="response"></span>
                 <?php if ($user->isAdmin()): ?>
                     <select name="role" id="role">
                         <option value="user" <?= $user->getRole() === 'user' ? 'selected' : '' ?>>Utilisateur</option>
