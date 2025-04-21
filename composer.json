@@ -21,6 +21,8 @@
     ],
     "scripts": {
         "serve": "php -S localhost:8080 -t public",
-        "test": "phpunit --configuration phpunit.xml"
+        "test": "phpunit --configuration phpunit.xml",
+        "database": "php database/setup.php",
+        "migrations": "php database/run-migrations.php"
     }
 }
