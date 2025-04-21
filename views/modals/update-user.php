@@ -13,11 +13,13 @@
                 <input type="email" name="email" id="email" placeholder="<?= $user->getEmail() ?>"
                     value="<?= $user->getEmail() ?>">
                 <span class="response"></span>
-                <select name="role" id="role">
-                    <option value="user" <?= $user->getRole() === 'user' ? 'selected' : '' ?>>Utilisateur</option>
-                    <option value="admin" <?= $user->getRole() === 'admin' ? 'selected' : '' ?>>Administrateur</option>
-                </select>
-                <span class="response"></span>
+                <?php if ($user->isAdmin()): ?>
+                    <select name="role" id="role">
+                        <option value="user" <?= $user->getRole() === 'user' ? 'selected' : '' ?>>Utilisateur</option>
+                        <option value="admin" <?= $user->getRole() === 'admin' ? 'selected' : '' ?>>Administrateur</option>
+                    </select>
+                    <span class="response"></span>
+                <?php endif; ?>
                 <div>
                     <button type="submit" class="btnVaild" id="submit">Ajouter</button>
                 </div>

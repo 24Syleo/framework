@@ -103,4 +103,32 @@ class User
         $this->role = $role;
         return $this;
     }
+
+    public function hasRole(string|array $roles): bool
+    {
+        if (is_string($roles)) {
+            return $this->role === $roles;
+        }
+
+        if (is_array($roles)) {
+            return in_array($this->role, $roles);
+        }
+
+        return false;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('admin');
+    }
+
+    public function isClient(): bool
+    {
+        return $this->hasRole('client');
+    }
+
+    public function isUser(): bool
+    {
+        return $this->hasRole('user');
+    }
 }

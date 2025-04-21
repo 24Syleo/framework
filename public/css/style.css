@@ -104,8 +104,9 @@ nav {
     border-radius: 5px;
 }
 
-.nav-logo span {
+.nav-logo a {
     margin-left: 0.5em;
+    text-transform: capitalize;
 }
 
 #btnMenu {

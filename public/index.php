@@ -6,6 +6,7 @@ session_start();
 use Syleo24\Framework\core\Router;
 use Syleo24\Framework\util\Config;
 use Syleo24\Framework\middlewares\CsrfMiddleware;
+use Syleo24\Framework\middlewares\RoleMiddleware;
 
 Config::getEnv();
 
@@ -16,6 +17,15 @@ $router = new Router();
 
 // Middleware global
 $router->use(CsrfMiddleware::class);
+
+// Middleware pour les routes avec un rôle admin
+$router->middleware('users', RoleMiddleware::check(['admin']));
+$router->middleware('user_add', RoleMiddleware::check(['admin']));
+
+// Middleware pour les routes avec un rôle user et admin
+$router->middleware('user', RoleMiddleware::check(['admin', 'user']));
+$router->middleware('user_update', RoleMiddleware::check(['admin', 'user']));
+
 // Routes GET
 $router->get('/', 'HomeController#index', 'home');
 $router->get('/login', 'AuthController#login', 'login');
