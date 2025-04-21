@@ -1,30 +1,28 @@
-import { modal } from '../util/modal.js';
+// public/js/pages/login.js
 import { Validator } from '../util/Validator.js';
 import { FetchService } from '../util/FetchService.js';
-
 export function init() {
-    const btnModal = document.querySelector('.btnAdd');
-    const modalUpdate = document.getElementById('modalUpdate');
-    const span = document.getElementsByClassName("close")[0];
-    const formUpdateUser = document.getElementById('updateUser');
+    console.log("login");
+    const formLogin = document.getElementById('login');
     const submit = document.getElementById('submit');
 
-    const validator = new Validator(formUpdateUser);
+    const validator = new Validator(formLogin);
 
     submit.addEventListener('click', async (evt) => {
         evt.preventDefault();
         const isValid = validator.validate();
 
         if (isValid) {
-            const formData = new FormData(formUpdateUser);
+            const formData = new FormData(formLogin);
             // Send data to server
             const data = Object.fromEntries(formData.entries());
 
+            console.log(data);
 
             try {
-                const response = await FetchService.post('/user/update/' + data.id, data);
+                const response = await FetchService.post('/handleLogin', data);
                 if (response.success) {
-                    location.reload();
+                    location.href = '/';
                 } else {
                     location.reload();
                 }
@@ -35,7 +33,5 @@ export function init() {
             alert('Veuillez remplir tous les champs correctement.');
         }
     })
-
-    modal(btnModal, modalUpdate, span);
 
 }

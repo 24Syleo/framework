@@ -33,7 +33,7 @@ class User
 
     public function setUsername(string $username): static
     {
-        $cleanUsername = trim(htmlspecialchars($username, ENT_QUOTES, 'UTF-8'));
+        $cleanUsername = trim($username);
 
         if (strlen($cleanUsername) < 3) {
             throw new Exception('Username must be at least 3 characters long.');

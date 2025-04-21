@@ -26,7 +26,9 @@ export class FetchService {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                },
+                    'X-CSRF-Token': FetchService.getCsrfToken()
+                }
+                ,
                 body: JSON.stringify(data)
             });
             return await response.json();
@@ -41,6 +43,7 @@ export class FetchService {
             const response = await fetch(url, {
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-Token': FetchService.getCsrfToken()
                 },
                 body: JSON.stringify({
                     _method: 'DELETE', // PHP trick
@@ -52,5 +55,9 @@ export class FetchService {
             console.error('DELETE error:', err);
             throw err;
         }
+    }
+
+    static getCsrfToken() {
+        return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
     }
 }

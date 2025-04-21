@@ -10,6 +10,8 @@ class Router
     private AltoRouter $router;
     private string $controllerNamespace = 'Syleo24\\Framework\\controller';
     private array $middlewares = [];
+    private array $globalMiddlewares = [];
+
 
     public function __construct()
     {
@@ -38,6 +40,13 @@ class Router
         $this->router->map('GET|POST', $route, $target, $name);
     }
 
+    // Ajouter un middleware global
+    public function use(string $middlewareClass)
+    {
+        $this->globalMiddlewares[] = $middlewareClass;
+    }
+
+
     // Ajouter un middleware pour une route nommée
     public function middleware(string $routeName, callable $callback)
     {
@@ -54,6 +63,14 @@ class Router
         }
 
         $routeName = $match['name'] ?? null;
+
+        // Applique les middleware globaux
+        foreach ($this->globalMiddlewares as $middlewareClass) {
+            if (method_exists($middlewareClass, 'handle')) {
+                $middlewareClass::handle(); // ou new $middlewareClass si tu veux une instance
+            }
+        }
+
 
         // Vérifie si un middleware est associé à cette route
         if ($routeName && isset($this->middlewares[$routeName])) {

@@ -8,6 +8,8 @@
 
 <div id="menu">
     <a href="/" class="link">Home</a>
+    <a href="/login" class="link">Se connecter</a>
+    <a href="/logout" class="link">Se déconnecter</a>
     <a href="/commande" class="link">Commandes</a>
     <a href="/adresse" class="link">Adresse</a>
     <a href="/users" class="link">Utilisateurs</a>
