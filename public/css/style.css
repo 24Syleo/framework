@@ -56,6 +56,14 @@ body {
     color: var(--grey);
 }
 
+.container {
+    max-width: 600px;
+    margin-inline: auto;
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+}
+
 h1,
 h2,
 h3,
@@ -65,6 +73,7 @@ h5 {
     font-weight: var(--bolder);
     font-size: var(--size-large);
     color: var(--primary);
+    text-transform: capitalize;
 }
 
 .btnAdd {

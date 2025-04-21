@@ -10,7 +10,7 @@ use Syleo24\Framework\util\FlashMessage;
 use Syleo24\Framework\serializer\UserSerializer;
 use Syleo24\Framework\util\SafeXss;
 
-class UserController extends Controller
+class ClientController extends Controller
 {
     private $model;
 
@@ -22,17 +22,17 @@ class UserController extends Controller
     public function index()
     {
         try {
-            $users = $this->model->getByRole('user');
+            $clients = $this->model->getByRole('client');
 
-            $usersSafe = [];
-            foreach ($users as $user) {
-                $usersSafe[] = SafeXss::user($user);
+            $clientsSafe = [];
+            foreach ($clients as $client) {
+                $clientsSafe[] = SafeXss::user($client);
             }
 
-            $this->render('users', ['title' => 'Utilisateurs', 'users' => $usersSafe, 'csrf_token' => $_SESSION['csrf_token']]);
+            $this->render('clients', ['title' => 'Clients', 'clients' => $clientsSafe]);
         } catch (Exception $e) {
             FlashMessage::set('Erreur : ' . $e->getMessage(), 'error');
-            $this->render('users', ['title' => 'Utilisateurs', 'users' => []]);
+            $this->render('clients', ['title' => 'Clients', 'clients' => []]);
         }
     }
 
@@ -42,10 +42,10 @@ class UserController extends Controller
             $json = file_get_contents('php://input');
             $data = json_decode($json, true);
 
-            if (!isset($data['username'], $data['email'], $data['password'], $data['role'])) {
+            if (!isset($data['username'], $data['email'], $data['password'], $data['phone'])) {
                 throw new Exception('Champs manquants');
             }
-
+            $data['role'] = 'client';
             $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
             $userEntity = UserSerializer::fromArray($data);
@@ -56,15 +56,13 @@ class UserController extends Controller
             $insertedUser = $this->model->insert($userEntity);
             $safeUser = SafeXss::user($insertedUser);
 
-            FlashMessage::set('Utilisateur ajouté avec succès !', 'success');
-
+            FlashMessage::set('Client ajouté avec succès !', 'success');
             echo json_encode([
                 'success' => true,
-                'user' => UserSerializer::toArray($safeUser)
+                'client' => UserSerializer::toArray($safeUser)
             ]);
         } catch (Exception $e) {
             FlashMessage::set('Erreur : ' . $e->getMessage(), 'error');
-
             http_response_code(400);
             echo json_encode([
                 'success' => false,
@@ -76,13 +74,12 @@ class UserController extends Controller
     public function edit($id)
     {
         try {
-
-            $user = $this->model->getById($id);
-            if (!$user instanceof User || !$user) {
-                throw new Exception('Utilisateur introuvable');
+            $client = $this->model->getById($id);
+            if (!$client instanceof User || !$client) {
+                throw new Exception('Client introuvable');
             }
-            $safeUser = SafeXss::user($user);
-            $this->render('user', ['user' => $safeUser, 'csrf_token' => $_SESSION['csrf_token'], 'title' => 'Modifier un utilisateur']);
+            $safeUser = SafeXss::user($client);
+            $this->render('client', ['client' => $safeUser, 'title' => 'Modifier un client']);
         } catch (Exception $e) {
             FlashMessage::set('Erreur : ' . $e->getMessage(), 'error');
             $this->render('error', ['title' => 'Erreur']);
@@ -121,8 +118,7 @@ class UserController extends Controller
 
             $safeUser = SafeXss::user($updatedUser);
 
-            FlashMessage::set('Utilisateur ' . $safeUser->getUsername() .  ' mis à jour avec succès !', 'success');
-
+            FlashMessage::set('Client ' . $safeUser->getUsername() .  ' mis à jour avec succès !', 'success');
             http_response_code(200);
             echo json_encode([
                 'success' => true,
@@ -130,7 +126,6 @@ class UserController extends Controller
             ]);
         } catch (Exception $e) {
             FlashMessage::set('Erreur : ' . $e->getMessage(), 'error');
-
             http_response_code(400);
             echo json_encode([
                 'success' => false,

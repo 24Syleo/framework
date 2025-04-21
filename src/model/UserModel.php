@@ -86,6 +86,22 @@ class UserModel extends Model
         }
     }
 
+    public function getByRole(string $role): array
+    {
+        try {
+            $query = "SELECT * FROM users WHERE role = ?";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute([$role]);
+            $array = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return array_map(function ($array) {
+                return UserSerializer::fromArray($array);
+            }, $array);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
     public function update(User $user): User
     {
         try {

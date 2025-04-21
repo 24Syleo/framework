@@ -1,32 +1,33 @@
 import { modal } from '../util/modal.js';
 import { Validator } from '../util/Validator.js';
 import { FetchService } from '../util/FetchService.js';
+
 export function init() {
     const btnModal = document.querySelector('.btnAdd');
-    const modalAdd = document.getElementById('modalAdd');
+    const modalUpdate = document.getElementById('modalUpdate');
     const span = document.getElementsByClassName("close")[0];
-    const formUser = document.getElementById('addUser');
+    const formUpdateClient = document.getElementById('updateClient');
     const submit = document.getElementById('submit');
 
-    const validator = new Validator(formUser);
+    const validator = new Validator(formUpdateClient);
 
     submit.addEventListener('click', async (evt) => {
         evt.preventDefault();
-
         const isValid = validator.validate();
 
         if (isValid) {
-            const formData = new FormData(formUser);
+            const formData = new FormData(formUpdateClient);
             // Send data to server
             const data = Object.fromEntries(formData.entries());
 
+
             try {
-                const response = await FetchService.post('/user/add', data);
+                const response = await FetchService.post('/user/update/' + data.id, data);
                 if (response.success) {
-                    // alert('Utilisateur  ' + response.user.username + ' ajouté avec succès.');
+                    // alert('Utilisateur  ' + response.user.username + 'modifié avec succès.');
                     location.reload();
                 } else {
-                    // alert('Utilisateur  ' + response.user.username + ' erreur.');
+                    // alert('Erreur lors de la modification de l\'utilisateur.');
                     location.reload();
                 }
             } catch (err) {
@@ -35,9 +36,8 @@ export function init() {
         } else {
             alert('Veuillez remplir tous les champs correctement.');
         }
+    })
 
-    });
+    modal(btnModal, modalUpdate, span);
 
-
-    modal(btnModal, modalAdd, span);
 }

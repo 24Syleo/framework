@@ -5,7 +5,7 @@ export function init() {
     const btnModal = document.querySelector('.btnAdd');
     const modalAdd = document.getElementById('modalAdd');
     const span = document.getElementsByClassName("close")[0];
-    const formUser = document.getElementById('addUser');
+    const formUser = document.getElementById('addClient');
     const submit = document.getElementById('submit');
 
     const validator = new Validator(formUser);
@@ -21,7 +21,7 @@ export function init() {
             const data = Object.fromEntries(formData.entries());
 
             try {
-                const response = await FetchService.post('/user/add', data);
+                const response = await FetchService.post('/client/add', data);
                 if (response.success) {
                     // alert('Utilisateur  ' + response.user.username + ' ajouté avec succès.');
                     location.reload();

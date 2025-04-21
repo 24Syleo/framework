@@ -9,6 +9,11 @@
         <i class="fas fa-envelope"></i>
         <a href="mailto:<?= $user->getEmail() ?>" class="address-text"><?= $user->getEmail() ?></a>
     </div>
+
+    <div class="address-item">
+        <i class="fas fa-phone"></i>
+        <a href="tel:<?= $user->getPhone() ?>" class="address-text"><?= $user->getPhone() ?></a>
+    </div>
 </address>
 
 <button class="btnAdd"><i class="fa-solid fa-edit"></i></button>
