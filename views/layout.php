@@ -26,7 +26,7 @@ if (empty($page[0])) {
 }
 ?>
 
-<body data-page="<?= htmlspecialchars($page[0], ENT_QUOTES, 'UTF-8') ?>">
+<body data-page="<?= e($page[0]) ?>">
     <?php include_once 'partials/navbar.php' ?>
     <?php include_once 'partials/flashmessage.php' ?>
     <main>

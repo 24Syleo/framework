@@ -1,6 +1,7 @@
 <?php
 
 require_once '../vendor/autoload.php';
+require_once '../src/util/SafeXss.php';
 session_start();
 
 use Syleo24\Framework\core\Router;

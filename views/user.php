@@ -1,18 +1,18 @@
-<h1><?= $user->getUsername() ?></h1>
+<h1><?= e($user->getUsername()) ?></h1>
 <address class="address-container">
     <div class="address-item">
         <i class="fas fa-lock"></i>
-        <span class="address-text"><?= $user->getRole() ?></span>
+        <span class="address-text"><?= e($user->getRole()) ?></span>
     </div>
 
     <div class="address-item">
         <i class="fas fa-envelope"></i>
-        <a href="mailto:<?= $user->getEmail() ?>" class="address-text"><?= $user->getEmail() ?></a>
+        <a href="mailto:<?= e($user->getEmail()) ?>" class="address-text"><?= e($user->getEmail()) ?></a>
     </div>
 
     <div class="address-item">
         <i class="fas fa-phone"></i>
-        <a href="tel:<?= $user->getPhone() ?>" class="address-text"><?= $user->getPhone() ?></a>
+        <a href="tel:<?= e($user->getPhone()) ?>" class="address-text"><?= e($user->getPhone()) ?></a>
     </div>
 </address>
 
