@@ -8,7 +8,6 @@ use Syleo24\Framework\core\Controller;
 use Syleo24\Framework\model\UserModel;
 use Syleo24\Framework\util\FlashMessage;
 use Syleo24\Framework\serializer\UserSerializer;
-use Syleo24\Framework\util\SafeXss;
 
 class UserController extends Controller
 {
@@ -24,12 +23,7 @@ class UserController extends Controller
         try {
             $users = $this->model->getByRole('user');
 
-            $usersSafe = [];
-            foreach ($users as $user) {
-                $usersSafe[] = SafeXss::user($user);
-            }
-
-            $this->render('users', ['title' => 'Utilisateurs', 'users' => $usersSafe, 'csrf_token' => $_SESSION['csrf_token']]);
+            $this->render('users', ['title' => 'Utilisateurs', 'users' => $users, 'csrf_token' => $_SESSION['csrf_token']]);
         } catch (Exception $e) {
             FlashMessage::set('Erreur : ' . $e->getMessage(), 'error');
             $this->render('users', ['title' => 'Utilisateurs', 'users' => []]);
@@ -54,13 +48,12 @@ class UserController extends Controller
             }
 
             $insertedUser = $this->model->insert($userEntity);
-            $safeUser = SafeXss::user($insertedUser);
 
             FlashMessage::set('Utilisateur ajouté avec succès !', 'success');
 
             echo json_encode([
                 'success' => true,
-                'user' => UserSerializer::toArray($safeUser)
+                'user' => UserSerializer::toArray($insertedUser)
             ]);
         } catch (Exception $e) {
             FlashMessage::set('Erreur : ' . $e->getMessage(), 'error');
@@ -81,8 +74,7 @@ class UserController extends Controller
             if (!$user instanceof User || !$user) {
                 throw new Exception('Utilisateur introuvable');
             }
-            $safeUser = SafeXss::user($user);
-            $this->render('user', ['user' => $safeUser, 'csrf_token' => $_SESSION['csrf_token'], 'title' => 'Modifier un utilisateur']);
+            $this->render('user', ['user' => $user, 'csrf_token' => $_SESSION['csrf_token'], 'title' => 'Modifier un utilisateur']);
         } catch (Exception $e) {
             FlashMessage::set('Erreur : ' . $e->getMessage(), 'error');
             $this->render('error', ['title' => 'Erreur']);
@@ -119,14 +111,12 @@ class UserController extends Controller
                 throw new Exception('Invalid update user entity');
             }
 
-            $safeUser = SafeXss::user($updatedUser);
-
-            FlashMessage::set('Utilisateur ' . $safeUser->getUsername() .  ' mis à jour avec succès !', 'success');
+            FlashMessage::set('Utilisateur ' . $updatedUser->getUsername() .  ' mis à jour avec succès !', 'success');
 
             http_response_code(200);
             echo json_encode([
                 'success' => true,
-                'user' => UserSerializer::toArray($safeUser)
+                'user' => UserSerializer::toArray($updatedUser)
             ]);
         } catch (Exception $e) {
             FlashMessage::set('Erreur : ' . $e->getMessage(), 'error');

@@ -8,7 +8,6 @@ use Syleo24\Framework\core\Controller;
 use Syleo24\Framework\model\UserModel;
 use Syleo24\Framework\util\FlashMessage;
 use Syleo24\Framework\serializer\UserSerializer;
-use Syleo24\Framework\util\SafeXss;
 
 class ClientController extends Controller
 {
@@ -24,12 +23,7 @@ class ClientController extends Controller
         try {
             $clients = $this->model->getByRole('client');
 
-            $clientsSafe = [];
-            foreach ($clients as $client) {
-                $clientsSafe[] = SafeXss::user($client);
-            }
-
-            $this->render('clients', ['title' => 'Clients', 'clients' => $clientsSafe]);
+            $this->render('clients', ['title' => 'Clients', 'clients' => $clients]);
         } catch (Exception $e) {
             FlashMessage::set('Erreur : ' . $e->getMessage(), 'error');
             $this->render('clients', ['title' => 'Clients', 'clients' => []]);
@@ -54,12 +48,11 @@ class ClientController extends Controller
             }
 
             $insertedUser = $this->model->insert($userEntity);
-            $safeUser = SafeXss::user($insertedUser);
 
             FlashMessage::set('Client ajouté avec succès !', 'success');
             echo json_encode([
                 'success' => true,
-                'client' => UserSerializer::toArray($safeUser)
+                'client' => UserSerializer::toArray($insertedUser)
             ]);
         } catch (Exception $e) {
             FlashMessage::set('Erreur : ' . $e->getMessage(), 'error');
@@ -78,8 +71,7 @@ class ClientController extends Controller
             if (!$client instanceof User || !$client) {
                 throw new Exception('Client introuvable');
             }
-            $safeUser = SafeXss::user($client);
-            $this->render('client', ['client' => $safeUser, 'title' => 'Modifier un client']);
+            $this->render('client', ['client' => $client, 'title' => 'Modifier un client']);
         } catch (Exception $e) {
             FlashMessage::set('Erreur : ' . $e->getMessage(), 'error');
             $this->render('error', ['title' => 'Erreur']);
@@ -116,13 +108,11 @@ class ClientController extends Controller
                 throw new Exception('Invalid update user entity');
             }
 
-            $safeUser = SafeXss::user($updatedUser);
-
-            FlashMessage::set('Client ' . $safeUser->getUsername() .  ' mis à jour avec succès !', 'success');
+            FlashMessage::set('Client ' . $updatedUser->getUsername() .  ' mis à jour avec succès !', 'success');
             http_response_code(200);
             echo json_encode([
                 'success' => true,
-                'user' => UserSerializer::toArray($safeUser)
+                'user' => UserSerializer::toArray($updatedUser)
             ]);
         } catch (Exception $e) {
             FlashMessage::set('Erreur : ' . $e->getMessage(), 'error');
