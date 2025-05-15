@@ -9,14 +9,12 @@ class Router
 {
     private AltoRouter $router;
     private string $controllerNamespace = 'Syleo24\\Framework\\controller';
-    private array $middlewares = [];
+    private array $routeMiddlewares = [];
     private array $globalMiddlewares = [];
-
 
     public function __construct()
     {
         $this->router = new AltoRouter();
-        // $this->router->setBasePath('/public'); // optionnel
     }
 
     // Méthodes pour enregistrer les routes
@@ -40,20 +38,29 @@ class Router
         $this->router->map('GET|POST', $route, $target, $name);
     }
 
-    // Ajouter un middleware global
+    // Enregistre un middleware global (toutes les routes)
     public function use(string $middlewareClass)
     {
         $this->globalMiddlewares[] = $middlewareClass;
     }
 
-
-    // Ajouter un middleware pour une route nommée
+    // Ajoute un middleware à une route nommée (accumulable)
     public function middleware(string $routeName, callable $callback)
     {
-        $this->middlewares[$routeName] = $callback;
+        $this->routeMiddlewares[$routeName][] = $callback;
     }
 
-    // Lancer la bonne route
+    // Optionnel : middleware en lot pour plusieurs routes
+    public function groupMiddleware(array $routeNames, array $middlewares)
+    {
+        foreach ($routeNames as $routeName) {
+            foreach ($middlewares as $middleware) {
+                $this->middleware($routeName, $middleware);
+            }
+        }
+    }
+
+    // Lancer la bonne route avec middlewares
     public function dispatch()
     {
         $match = $this->router->match();
@@ -64,22 +71,24 @@ class Router
 
         $routeName = $match['name'] ?? null;
 
-        // Applique les middleware globaux
+        // 1. Appliquer les middlewares globaux
         foreach ($this->globalMiddlewares as $middlewareClass) {
             if (method_exists($middlewareClass, 'handle')) {
-                $middlewareClass::handle(); // ou new $middlewareClass si tu veux une instance
+                $middlewareClass::handle();
             }
         }
 
-
-        // Vérifie si un middleware est associé à cette route
-        if ($routeName && isset($this->middlewares[$routeName])) {
-            $result = call_user_func($this->middlewares[$routeName]);
-            if ($result === false) {
-                throw new Exception("Accès non autorisé.");
+        // 2. Appliquer les middlewares spécifiques à la route
+        if ($routeName && isset($this->routeMiddlewares[$routeName])) {
+            foreach ($this->routeMiddlewares[$routeName] as $middleware) {
+                $result = call_user_func($middleware);
+                if ($result === false) {
+                    throw new Exception("Accès non autorisé.");
+                }
             }
         }
 
+        // 3. Appeler le contrôleur
         list($controllerName, $method) = explode('#', $match['target']);
         $controllerClass = $this->controllerNamespace . '\\' . $controllerName;
 
@@ -96,11 +105,13 @@ class Router
         call_user_func_array([$controller, $method], $match['params']);
     }
 
+    // Génère une URL depuis le nom de la route
     public function generate(string $routeName, array $params = []): ?string
     {
         return $this->router->generate($routeName, $params);
     }
 
+    // Redirection HTTP
     public function redirect(string $url)
     {
         header("Location: $url");

@@ -12,6 +12,7 @@ class User
     private string $password;
     private string $role;
     private string $phone;
+    private string $secret;
 
     public function getId(): ?int
     {
@@ -155,6 +156,26 @@ class User
         }
 
         $this->phone = $cleanPhone;
+        return $this;
+    }
+
+    /**
+     * Get the value of secret
+     */
+    public function getSecret()
+    {
+        return $this->secret;
+    }
+
+    /**
+     * Set the value of secret
+     *
+     * @return  self
+     */
+    public function setSecret($secret)
+    {
+        $this->secret = $secret;
+
         return $this;
     }
 }

@@ -24,18 +24,18 @@ $user = $_SESSION['user'] ?? null;
     <?php else: ?>
         <a href="/logout" class="link">Se déconnecter</a>
 
-        <?php if ($user->isAdmin()): ?>
+        <?php if ($user->isAdmin() && $_SESSION['2fa_verified'] === true): ?>
             <a href="/users" class="link">Utilisateurs</a>
             <a href="/commandes" class="link">Commandes</a>
             <a href="/clients" class="link">Clients</a>
             <a href="/adresses" class="link">Adresses</a>
         <?php endif; ?>
 
-        <?php if ($user->isUser()): ?>
+        <?php if ($user->isUser() && $_SESSION['2fa_verified'] === true): ?>
             <a href="/user/<?= $user->getId() ?>" class="link">Profil Utilisateur</a>
         <?php endif; ?>
 
-        <?php if ($user->isClient()): ?>
+        <?php if ($user->isClient() && $_SESSION['2fa_verified'] === true): ?>
             <a href="/mes-commandes" class="link">Mes Commandes</a>
         <?php endif; ?>
     <?php endif; ?>

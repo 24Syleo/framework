@@ -113,4 +113,16 @@ class UserModel extends Model
             throw $e;
         }
     }
+
+    public function update_secret($secret, $id): User
+    {
+        try {
+            $query = "UPDATE users SET secret=:secret WHERE id=:id";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(["secret" => $secret, "id" => $id]);
+            return $this->getById($id);
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
 }

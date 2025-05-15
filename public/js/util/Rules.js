@@ -1,5 +1,10 @@
 // rules.js
 export const rules = {
+    tfa_code: {
+        test: (val) => val.length === 6,
+        success: "✅ code tfa valide.",
+        error: "❌ Doit contenir 6 chiffres.",
+    },
     username: {
         test: (val) => val.length >= 3 && val.length <= 20,
         success: "✅ Nom d'utilisateur valide.",

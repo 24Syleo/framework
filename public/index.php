@@ -7,7 +7,9 @@ session_start();
 use Syleo24\Framework\core\Router;
 use Syleo24\Framework\util\Config;
 use Syleo24\Framework\middlewares\CsrfMiddleware;
+use Syleo24\Framework\middlewares\RequireLoginMiddleware;
 use Syleo24\Framework\middlewares\RoleMiddleware;
+use Syleo24\Framework\middlewares\TwoFactorMiddleware;
 
 Config::getEnv();
 
@@ -19,23 +21,63 @@ $router = new Router();
 // Middleware global
 $router->use(CsrfMiddleware::class);
 
-// Middleware pour les routes avec un rôle admin
-$router->middleware('users', RoleMiddleware::check(['admin']));
-$router->middleware('user_add', RoleMiddleware::check(['admin']));
-$router->middleware('client_add', RoleMiddleware::check(['admin']));
+// Middleware global
+$router->use(CsrfMiddleware::class);
 
-// Middleware pour les routes avec un rôle user et admin
-$router->middleware('user', RoleMiddleware::check(['admin', 'user']));
-$router->middleware('user_update', RoleMiddleware::check(['admin', 'user']));
+// Middleware pour connexion requise (ex: tfa)
+$router->groupMiddleware([
+    'tfa',
+    'home',
+    'users',
+    'user',
+    'clients',
+    'client'
+], [
+    [RequireLoginMiddleware::class, 'check']
+]);
 
-// Middleware pour les routes avec un rôle client et admin
-$router->middleware('client', RoleMiddleware::check(['admin', 'client']));
-$router->middleware('client_update', RoleMiddleware::check(['admin', 'client']));
+
+// Groupes de routes nécessitant la double auth
+$router->groupMiddleware([
+    'home',
+    'users',
+    'user',
+    'clients',
+    'client'
+], [
+    [TwoFactorMiddleware::class, 'check']
+]);
+
+// Routes nécessitant rôle admin
+$router->groupMiddleware([
+    'users',
+    'user_add',
+    'client_add'
+], [
+    RoleMiddleware::check(['admin'])
+]);
+
+// Rôle user ou admin
+$router->groupMiddleware([
+    'user',
+    'user_update'
+], [
+    RoleMiddleware::check(['admin', 'user'])
+]);
+
+// Rôle client ou admin
+$router->groupMiddleware([
+    'client',
+    'client_update'
+], [
+    RoleMiddleware::check(['admin', 'client'])
+]);
 
 
 // Routes GET
 $router->get('/', 'HomeController#index', 'home');
 $router->get('/login', 'AuthController#login', 'login');
+$router->get('/tfa', 'AuthController#tfa', 'tfa');
 $router->get('/logout', 'AuthController#logout', 'logout');
 $router->get('/users', 'UserController#index', 'users');
 $router->get('/clients', 'ClientController#index', 'clients');
@@ -48,6 +90,7 @@ $router->post('/client/add', 'ClientController#add', 'client_add');
 $router->post('/user/update/[i:id]', 'UserController#update', 'user_update');
 $router->post('/client/update/[i:id]', 'ClientController#update', 'client_update');
 $router->post('/handleLogin', 'AuthController#handleLogin', 'handleLogin');
+$router->post('/handleTfa', 'AuthController#handleTfa', 'handleTfa');
 
 
 // API ou autres

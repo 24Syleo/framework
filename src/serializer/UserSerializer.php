@@ -15,6 +15,9 @@ class UserSerializer
         if (isset($data['phone'])) {
             $user->setPhone($data['phone']);
         }
+        if (isset($data['secret'])) {
+            $user->setSecret($data['secret']);
+        }
         $user->setUsername($data['username']);
         $user->setEmail($data['email']);
         $user->setPassword($data['password']);
@@ -31,6 +34,7 @@ class UserSerializer
             'password' => $user->getPassword(),
             'role' => $user->getRole(),
             'phone' => $user->getPhone(),
+            'secret' => $user->getSecret()
         ];
     }
 }
