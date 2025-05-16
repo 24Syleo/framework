@@ -3,6 +3,7 @@
 namespace Syleo24\Framework\middlewares;
 
 use Syleo24\Framework\entity\User;
+use Syleo24\Framework\util\FlashMessage;
 
 class RoleMiddleware
 {
@@ -18,8 +19,7 @@ class RoleMiddleware
             $user = $_SESSION['user'];
 
             if (!in_array($user->getRole(), $allowedRoles)) {
-                header('HTTP/1.1 403 Forbidden');
-                echo "Accès refusé : rôle requis.";
+                FlashMessage::set("Role pas assez élevé", 'error');
                 return false;
             }
 

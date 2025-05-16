@@ -11,7 +11,6 @@ class RequireLoginMiddleware
         if (empty($_SESSION['user'])) {
             FlashMessage::set('Vous devez être connecté pour accéder à cette page.', 'error');
             header('Location: /login');
-            http_response_code(401);
             exit;
         }
     }

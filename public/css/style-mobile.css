@@ -6,4 +6,8 @@
     main {
         margin-inline: 5%;
     }
+
+    .container {
+        padding: 0.5em;
+    }
 }

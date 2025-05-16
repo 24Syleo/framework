@@ -16,7 +16,7 @@
                 <input type="text" name="phone" id="phone" placeholder="<?= e($user->getPhone()) ?>"
                     value="<?= e($user->getPhone()) ?>">
                 <span class="response"></span>
-                <?php if ($user->isAdmin()): ?>
+                <?php if ($admin->isAdmin()): ?>
                     <select name="role" id="role">
                         <option value="user" <?= e($user->getRole()) === 'user' ? 'selected' : '' ?>>Utilisateur</option>
                         <option value="admin" <?= e($user->getRole()) === 'admin' ? 'selected' : '' ?>>Administrateur

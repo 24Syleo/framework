@@ -19,14 +19,13 @@ $user = $_SESSION['user'] ?? null;
                 <i class="fas fa-envelope"></i>
                 <a href="mailto:<?= e($user->getEmail()) ?>" class="address-text"><?= e($user->getEmail()) ?></a>
             </div>
-
             <div class="address-item">
                 <i class="fas fa-phone"></i>
                 <a href="tel:<?= e($user->getPhone()) ?>" class="address-text"><?= e($user->getPhone()) ?></a>
             </div>
             <div class="address-item">
                 <i class="fa-solid fa-edit"></i>
-                <a href="/<?= e($user->getRole()) ?>/<?= e($user->getId()) ?>">Edit</a>
+                <a href="/user/<?= e($user->getId()) ?>">Edit</a>
             </div>
             <div class="address-item">
                 <i class="fa fa-sign-out"></i>

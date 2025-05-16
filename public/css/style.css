@@ -392,3 +392,58 @@ textarea:focus-visible {
     padding: 0.2rem 0.5rem;
     transition: background-color 0.3s ease;
 }
+
+#text_code {
+    cursor: pointer;
+    padding: 0.4em 0.6em;
+    background-color: var(--secondary);
+    box-shadow: var(--box-shadow);
+    color: white;
+    font-weight: var(--bolder);
+    margin-top: 0.5em;
+    border: none;
+}
+
+#text_code:hover {
+    box-shadow: none;
+    background-color: white;
+    color: var(--secondary);
+}
+
+#viewSecret {
+    display: none;
+}
+
+#labelViewSecret {
+    display: inline-block;
+    vertical-align: middle;
+    align-self: center;
+    position: relative;
+    cursor: pointer;
+    background-color: var(--secondary);
+    border-radius: 1rem;
+    height: 20px;
+    width: 40px;
+    transition: all 0.5s ease-in-out;
+}
+
+#labelViewSecret::before {
+    content: "";
+    position: absolute;
+    background-color: white;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    top: 2.5px;
+    left: 2.5px;
+    transition: all 0.5s ease-in-out;
+}
+
+#viewSecret:checked+#labelViewSecret {
+    background-color: var(--primary);
+}
+
+#viewSecret:checked+#labelViewSecret::before {
+    content: "";
+    transform: translateX(20px);
+}

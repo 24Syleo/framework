@@ -3,6 +3,20 @@ import { Validator } from '../util/Validator.js';
 export function init() {
     const formTfa = document.getElementById('tfa');
     const submit = document.getElementById('submit');
+    const btn = document.getElementById('text_code');
+    const text = document.getElementById('text-to-copy');
+    const labelView = document.getElementById('labelViewSecret');
+    const checked = document.getElementById('viewSecret');
+
+    labelView.addEventListener('click', () => {
+        if (checked.checked) {
+            text.setAttribute('type', 'password')
+            checked.setAttribute('checked', '');
+        } else {
+            text.setAttribute('type', 'text')
+            checked.removeAttribute('checked');
+        }
+    })
 
     const validator = new Validator(formTfa);
 
@@ -28,5 +42,13 @@ export function init() {
                 console.error(err);
             }
         }
+    })
+
+    btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(text.value).then(() => {
+            alert("Secret copié dans le presse papier!")
+        }).catch((err) => {
+            alert("Erreur de copie : " + err);
+        })
     })
 }

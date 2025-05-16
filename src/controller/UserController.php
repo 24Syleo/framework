@@ -69,12 +69,12 @@ class UserController extends Controller
     public function edit($id)
     {
         try {
-
+            $admin = $_SESSION['user'];
             $user = $this->model->getById($id);
             if (!$user instanceof User || !$user) {
                 throw new Exception('Utilisateur introuvable');
             }
-            $this->render('user', ['user' => $user, 'csrf_token' => $_SESSION['csrf_token'], 'title' => 'Modifier un utilisateur']);
+            $this->render('user', ['admin' => $admin, 'user' => $user, 'csrf_token' => $_SESSION['csrf_token'], 'title' => 'Modifier un utilisateur']);
         } catch (Exception $e) {
             FlashMessage::set('Erreur : ' . $e->getMessage(), 'error');
             $this->render('error', ['title' => 'Erreur']);
