@@ -6,11 +6,11 @@
 
 <div class="container">
     <?php if (empty($user->getSecret())): ?>
-        <p>code secret: <?= $secret ?></p>
-        <img src="<?= $qr_code ?>">
+        <p>code secret: <?= e($secret) ?></p>
+        <img src="<?= e($qr_code) ?>">
     <?php endif; ?>
     <form id="tfa">
-        <input type="hidden" name="secret" value="<?= $secret ?>">
+        <input type="hidden" name="secret" value="<?= e($secret) ?>">
         <input type="text" name="tfa_code" id="tfa_code" placeholder="Vérification code">
         <span class="response"></span>
         <div>
