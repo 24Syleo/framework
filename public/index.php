@@ -27,7 +27,6 @@ $router->use(CsrfMiddleware::class);
 // Middleware pour connexion requise (ex: tfa)
 $router->groupMiddleware([
     'tfa',
-    'home',
     'users',
     'user',
     'clients',
@@ -39,7 +38,6 @@ $router->groupMiddleware([
 
 // Groupes de routes nécessitant la double auth
 $router->groupMiddleware([
-    'home',
     'users',
     'user',
     'clients',

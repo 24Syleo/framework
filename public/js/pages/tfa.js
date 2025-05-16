@@ -8,15 +8,17 @@ export function init() {
     const labelView = document.getElementById('labelViewSecret');
     const checked = document.getElementById('viewSecret');
 
-    labelView.addEventListener('click', () => {
-        if (checked.checked) {
-            text.setAttribute('type', 'password')
-            checked.setAttribute('checked', '');
-        } else {
-            text.setAttribute('type', 'text')
-            checked.removeAttribute('checked');
-        }
-    })
+    if (labelView && checked && text) {
+        labelView.addEventListener('click', () => {
+            if (checked.checked) {
+                text.setAttribute('type', 'password')
+                checked.setAttribute('checked', '');
+            } else {
+                text.setAttribute('type', 'text')
+                checked.removeAttribute('checked');
+            }
+        })
+    }
 
     const validator = new Validator(formTfa);
 
@@ -44,11 +46,13 @@ export function init() {
         }
     })
 
-    btn.addEventListener('click', () => {
-        navigator.clipboard.writeText(text.value).then(() => {
-            alert("Secret copié dans le presse papier!")
-        }).catch((err) => {
-            alert("Erreur de copie : " + err);
+    if (btn && text) {
+        btn.addEventListener('click', () => {
+            navigator.clipboard.writeText(text.value).then(() => {
+                alert("Secret copié dans le presse papier!")
+            }).catch((err) => {
+                alert("Erreur de copie : " + err);
+            })
         })
-    })
+    }
 }

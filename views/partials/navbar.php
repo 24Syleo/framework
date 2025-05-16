@@ -22,8 +22,6 @@ $user = $_SESSION['user'] ?? null;
     <?php if (!$user instanceof User): ?>
         <a href="/login" class="link">Se connecter</a>
     <?php else: ?>
-        <a href="/logout" class="link">Se déconnecter</a>
-
         <?php if ($user->isAdmin() && $_SESSION['2fa_verified'] === true): ?>
             <a href="/users" class="link">Utilisateurs</a>
             <a href="/commandes" class="link">Commandes</a>
@@ -38,5 +36,6 @@ $user = $_SESSION['user'] ?? null;
         <?php if ($user->isClient() && $_SESSION['2fa_verified'] === true): ?>
             <a href="/mes-commandes" class="link">Mes Commandes</a>
         <?php endif; ?>
+        <a href="/logout" class="link">Se déconnecter</a>
     <?php endif; ?>
 </div>

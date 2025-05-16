@@ -9,7 +9,7 @@ $user = $_SESSION['user'] ?? null;
     <h1>Bienvenue sur l'application Livraison</h1>
     <div class="container">
         <p>Connectez-vous pour profiter de toutes les fonctionnalités.</p>
-        <a href="/login" class="link"><i class="fa-solid fa-edit"></i> Se connecter</a>
+        <a href="/login" class="link"><i class="fa-solid fa-sign-in"></i> Se connecter</a>
     </div>
 <?php else: ?>
     <div class="container">
